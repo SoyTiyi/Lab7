@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,10 +35,10 @@ public class JDBCExample {
     
     public static void main(String args[]){
         try {
-            String url="jdbc:mysql://HOST:3306/BD";
+            String url="jdbc:mysql://desarrollo.is.escuelaing.edu.co:3306/bdprueba";
             String driver="com.mysql.jdbc.Driver";
-            String user="USER";
-            String pwd="PWD";
+            String user="bdprueba";
+            String pwd="prueba2019";
                         
             Class.forName(driver);
             Connection con=DriverManager.getConnection(url,user,pwd);
@@ -57,7 +58,7 @@ public class JDBCExample {
             System.out.println("-----------------------");
             
             
-            int suCodigoECI=20134423;
+            int suCodigoECI=2159518;
             registrarNuevoProducto(con, suCodigoECI, "SU NOMBRE", 99999999);            
             con.commit();
                         
@@ -80,11 +81,14 @@ public class JDBCExample {
      * @throws SQLException 
      */
     public static void registrarNuevoProducto(Connection con, int codigo, String nombre,int precio) throws SQLException{
-        //Crear preparedStatement
-        //Asignar parámetros
-        //usar 'execute'
 
-        
+        PreparedStatement insertarProducto = null;
+        String sentencia = "INSERT INTO ORD_PRODUCTOS VALUES (?,?,?);";
+        insertarProducto = con.prepareStatement(sentencia);
+        insertarProducto.setInt(1, codigo);
+        insertarProducto.setString(2, nombre);
+        insertarProducto.setInt(3, precio);
+        insertarProducto.executeUpdate();
         con.commit();
         
     }
@@ -96,14 +100,22 @@ public class JDBCExample {
      * @return 
      */
     public static List<String> nombresProductosPedido(Connection con, int codigoPedido){
+
         List<String> np=new LinkedList<>();
-        
-        //Crear prepared statement
-        //asignar parámetros
-        //usar executeQuery
-        //Sacar resultados del ResultSet
-        //Llenar la lista y retornarla
-        
+        PreparedStatement nombres = null;
+        String sentencia = "SELECT nombre, pedido_fk "+"FROM ORD_PRODUCTOS produ ,ORD_DETALLE_PEDIDO pedi "+"WHERE produ.codigo=pedi.producto_fk "+"ORDER BY pedi.pedido_fk;";
+        try {
+            con.setAutoCommit(false);
+            nombres = con.prepareStatement(sentencia);
+            ResultSet resultNombres = nombres.executeQuery();
+            while(resultNombres.next()){
+                String nombreProducto = resultNombres.getString("nombre");
+                String numeroPedido = resultNombres.getString("pedido_fk");
+                np.add(nombreProducto); np.add(numeroPedido);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return np;
     }
 
@@ -116,12 +128,20 @@ public class JDBCExample {
      */
     public static int valorTotalPedido(Connection con, int codigoPedido){
         
-        //Crear prepared statement
-        //asignar parámetros
-        //usar executeQuery
-        //Sacar resultado del ResultSet
-        
-        return 0;
+        PreparedStatement valorPedido = null;
+        String sentencia = "SELECT sum(cantidad) as valor "+"FROM ORD_DETALLE_PEDIDO pedi "+"WHERE pedido_fk="+codigoPedido+" "+"ORDER BY pedido_fk;";
+        int total = 0;
+        try {
+            con.setAutoCommit(false);
+            valorPedido = con.prepareStatement(sentencia);
+            ResultSet valor = valorPedido.executeQuery();
+            while(valor.next()){
+                total = valor.getInt("valor");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
     }
     
 
