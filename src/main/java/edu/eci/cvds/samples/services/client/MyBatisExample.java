@@ -16,11 +16,13 @@
  */
 package edu.eci.cvds.samples.services.client;
 
-
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -28,6 +30,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ClienteMapper;
 import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ItemMapper;
+import edu.eci.cvds.samples.entities.Item;
 
 /**
  *
@@ -65,10 +68,26 @@ public class MyBatisExample {
         SqlSession sqlss = sessionfact.openSession();
         ClienteMapper cm = sqlss.getMapper(ClienteMapper.class);
         ItemMapper im = sqlss.getMapper(ItemMapper.class);
+        System.out.println("---------------------------------------------");
         System.out.println("Consulta Clientes PA");
         System.out.println(cm.consultarClientes());
+        System.out.println("---------------------------------------------");
         System.out.println("Consulta Items PA");
         System.out.println(im.consultarItems());
+        System.out.println("---------------------------------------------");
+        System.out.println("Consultar Cliente con id 147852");
+        System.out.println(cm.consultarCliente(147852));
+        System.out.println("---------------------------------------------");
+        System.out.println("Consultar Item con id 2");
+        System.out.println(im.consultarItem(2));
+        System.out.println("---------------------------------------------");
+        /* Insertar Item Rentado */
+        /* Date date1 = (Date) new GregorianCalendar(2020, Calendar.AUGUST, 10).getTime();
+        Date date2 = (Date) new GregorianCalendar(2020, Calendar.SEPTEMBER, 11).getTime();
+        cm.agregarItemRentadoACliente(2132577, 2, date1, date2); */
+        /* Insertar Item */
+        /* Preguntar como hacer el de insertar item */
+        
         sqlss.commit();
         sqlss.close();
 
