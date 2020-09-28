@@ -4,8 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="edu.eci.cvds.sampleprj.dao.mybatis.mappers.TipoItemMapper">
-
-    
-
-                
+  <!-- <select parameterType="map" id="consultarTipoItem" resultMap="TipoItemResult">
+		select c.nombre as nombre, c.documento as documento, c.telefono as telefono, c.direccion as direccion, c.email as email, c.vetado as vetado, ir.id as irId, ir.fechainiciorenta as irFechaInicio, ir.fechafinrenta as irFechaFin, i.id as itemId, i.nombre as itemNombre, i.descripcion as itemDescripcion, i.fechalanzamiento as itemFechaLanzamiento, i.tarifaxdia as itemTarifa, i.formatorenta as itemFormato, i.genero as itemGenero, ti.id as tipoId, ti.descripcion as tipoDescripcion
+    FROM VI_CLIENTES as c left join VI_ITEMRENTADO as ir on c.documento=ir.CLIENTES_documento left join VI_ITEMS as i on ir.ITEMS_id=i.id left join VI_TIPOITEM as ti on i.TIPOITEM_id=ti.id;
+  </select> -->
+  <!-- TipoItem -->
+  <resultMap id="TipoItemResult" type="TipoItem">
+    <id property="id" column="id"/>
+    <result property="descripcion" column="descripcion"/>
+  </resultMap>                
 </mapper>

@@ -58,7 +58,7 @@ public class JDBCExample {
             System.out.println("-----------------------");
             
             
-            int suCodigoECI=2159518;
+            int suCodigoECI=2129518;
             registrarNuevoProducto(con, suCodigoECI, "SU NOMBRE", 99999999);            
             con.commit();
                         
@@ -105,7 +105,6 @@ public class JDBCExample {
         PreparedStatement nombres = null;
         String sentencia = "SELECT nombre, pedido_fk "+"FROM ORD_PRODUCTOS produ ,ORD_DETALLE_PEDIDO pedi "+"WHERE produ.codigo=pedi.producto_fk "+"ORDER BY pedi.pedido_fk;";
         try {
-            con.setAutoCommit(false);
             nombres = con.prepareStatement(sentencia);
             ResultSet resultNombres = nombres.executeQuery();
             while(resultNombres.next()){
@@ -132,7 +131,6 @@ public class JDBCExample {
         String sentencia = "SELECT sum(cantidad) as valor "+"FROM ORD_DETALLE_PEDIDO pedi "+"WHERE pedido_fk="+codigoPedido+" "+"ORDER BY pedido_fk;";
         int total = 0;
         try {
-            con.setAutoCommit(false);
             valorPedido = con.prepareStatement(sentencia);
             ResultSet valor = valorPedido.executeQuery();
             while(valor.next()){
