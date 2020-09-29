@@ -23,7 +23,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,11 +57,10 @@ public class JDBCExample {
             System.out.println("-----------------------");
             
             
-            int suCodigoECI=2129518;
-            registrarNuevoProducto(con, suCodigoECI, "SU NOMBRE", 99999999);            
+            int suCodigoECI=2159518;
+            /* registrarNuevoProducto(con, suCodigoECI, "SU NOMBRE", 99999999);   */          
             con.commit();
-                        
-            
+
             con.close();
                                    
         } catch (ClassNotFoundException | SQLException ex) {
@@ -103,7 +101,7 @@ public class JDBCExample {
 
         List<String> np=new LinkedList<>();
         PreparedStatement nombres = null;
-        String sentencia = "SELECT nombre, pedido_fk "+"FROM ORD_PRODUCTOS produ ,ORD_DETALLE_PEDIDO pedi "+"WHERE produ.codigo=pedi.producto_fk "+"ORDER BY pedi.pedido_fk;";
+        String sentencia = "SELECT nombre, pedido_fk FROM ORD_PRODUCTOS produ ,ORD_DETALLE_PEDIDO pedi WHERE produ.codigo=pedi.producto_fk ORDER BY pedi.pedido_fk;";
         try {
             nombres = con.prepareStatement(sentencia);
             ResultSet resultNombres = nombres.executeQuery();
@@ -128,7 +126,7 @@ public class JDBCExample {
     public static int valorTotalPedido(Connection con, int codigoPedido){
         
         PreparedStatement valorPedido = null;
-        String sentencia = "SELECT sum(cantidad) as valor "+"FROM ORD_DETALLE_PEDIDO pedi "+"WHERE pedido_fk="+codigoPedido+" "+"ORDER BY pedido_fk;";
+        String sentencia = "SELECT sum(cantidad) as valor FROM ORD_DETALLE_PEDIDO pedi WHERE pedido_fk="+codigoPedido+" "+"ORDER BY pedido_fk;";
         int total = 0;
         try {
             valorPedido = con.prepareStatement(sentencia);

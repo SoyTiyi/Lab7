@@ -18,9 +18,11 @@ package edu.eci.cvds.samples.services.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.apache.ibatis.io.Resources;
@@ -31,6 +33,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ClienteMapper;
 import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ItemMapper;
 import edu.eci.cvds.samples.entities.Item;
+import edu.eci.cvds.samples.entities.TipoItem;
 
 /**
  *
@@ -60,10 +63,12 @@ public class MyBatisExample {
 
     /**
      * Programa principal de ejempo de uso de MyBATIS
+     * 
      * @param args
-     * @throws SQLException 
+     * @throws SQLException
+     * @throws ParseException
      */
-    public static void main(String args[]) throws SQLException {
+    public static void main(String args[]) throws SQLException, ParseException {
         SqlSessionFactory sessionfact = getSqlSessionFactory();
         SqlSession sqlss = sessionfact.openSession();
         ClienteMapper cm = sqlss.getMapper(ClienteMapper.class);
@@ -79,14 +84,13 @@ public class MyBatisExample {
         System.out.println(cm.consultarCliente(147852));
         System.out.println("---------------------------------------------");
         System.out.println("Consultar Item con id 2");
-        System.out.println(im.consultarItem(2));
+        System.out.println(im.consultarItem(1234));
         System.out.println("---------------------------------------------");
         /* Insertar Item Rentado */
-        /* Date date1 = (Date) new GregorianCalendar(2020, Calendar.AUGUST, 10).getTime();
-        Date date2 = (Date) new GregorianCalendar(2020, Calendar.SEPTEMBER, 11).getTime();
-        cm.agregarItemRentadoACliente(2132577, 2, date1, date2); */
+        cm.agregarItemRentadoACliente(4, 2, new SimpleDateFormat("yyyy-MM-dd").parse("2020-11-10"), new SimpleDateFormat("yyyy-MM-dd").parse("2020-12-10"));
         /* Insertar Item */
-        /* Preguntar como hacer el de insertar item */
+        Item item = new Item(new TipoItem(2,"Pelis"),2159518,"prueba","descripcion prueba",new SimpleDateFormat("yyyy-MM-dd").parse("2020-11-17"),(long)9000,"prueba","prueba");
+        im.insertarItem(item);
         
         sqlss.commit();
         sqlss.close();
