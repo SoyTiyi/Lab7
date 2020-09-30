@@ -89,7 +89,7 @@ public class MyBatisExample {
         /* Insertar Item Rentado */
         cm.agregarItemRentadoACliente(4, 2, new SimpleDateFormat("yyyy-MM-dd").parse("2020-11-10"), new SimpleDateFormat("yyyy-MM-dd").parse("2020-12-10"));
         /* Insertar Item */
-        Item item = new Item(new TipoItem(2,"Pelis"),2159518,"prueba","descripcion prueba",new SimpleDateFormat("yyyy-MM-dd").parse("2020-11-17"),(long)9000,"prueba","prueba");
+        Item item = new Item(new TipoItem(2,"Pelis"),2159966,"prueba","descripcion prueba",new SimpleDateFormat("yyyy-MM-dd").parse("2020-11-17"),(long)9000,"prueba","prueba");
         im.insertarItem(item);
         
         sqlss.commit();
